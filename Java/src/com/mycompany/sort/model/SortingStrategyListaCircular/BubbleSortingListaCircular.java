@@ -1,11 +1,21 @@
-package com.mycompany.sort.SortingStrategyListaCircular;
+package com.mycompany.sort.model.SortingStrategyListaCircular;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
 
+import com.mycompany.sort.model.politico.ListaEnlazadaSimpleCircular;
+import com.mycompany.sort.model.politico.Nodo;
+
 import java.util.Objects;
 
-public class BubbleSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular {
+public class BubbleSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T> {
  
+
+    /**
+     * Ordena una lista enlazada simple circular de objetos {@link Politico} usando el algoritmo Bubble Sort
+     *
+     * @param lista         la lista enlazada simple circular de políticos a ordenar
+     * @return objeto {@link SortResult} con estadísticas del proceso (iteraciones y tiempo)
+     */
 
     @Override
 public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {

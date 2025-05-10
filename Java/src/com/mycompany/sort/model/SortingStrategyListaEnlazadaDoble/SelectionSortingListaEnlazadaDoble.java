@@ -1,10 +1,12 @@
-package com.mycompany.sort.SortingStrategyListaEnlazadaDoble;
+package com.mycompany.sort.model.SortingStrategyListaEnlazadaDoble;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaDoble;
+import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
-public class SelectionSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble {
+public class SelectionSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
 
     @Override
 public SortResult sort(ListaEnlazadaDoble<T> lista) {

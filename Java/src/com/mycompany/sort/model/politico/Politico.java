@@ -53,6 +53,16 @@ public class Politico implements Comparable<Politico>{
         return String.format("$%,d - %s", dinero, fecha.toString());
     }
 
+    /**
+     * Compara este Papa con otro basándose en la fecha de inicio del papado (orden cronológico).
+     * Esta es la implementación del contrato {@link Comparable}<{@link Papa}>.
+     *
+     * @param other El otro Papa a comparar (no debe ser null).
+     * @return Un entero negativo, cero o positivo si este Papa inició antes,
+     *         en la misma fecha, o después que {@code other}.
+     * @throws NullPointerException si {@code other} es null.
+     */
+
     @Override
     public int compareTo(Politico other) {
     Objects.requireNonNull(other, "No se puede comparar con un Politico null.");

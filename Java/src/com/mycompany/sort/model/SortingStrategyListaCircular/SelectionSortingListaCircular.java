@@ -1,66 +1,55 @@
-package com.mycompany.sort.SortingStrategyListaCircular;
+package com.mycompany.sort.model.SortingStrategyListaCircular;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimpleCircular;
+import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
-public class SelectionSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular {
+public class SelectionSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T> {
     
     @Override
-public SortResult Sort(ListaEnlazadaSimpleCircular<T> lista) {
+public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {
     Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
 
     long iterations = 0;
     double start = System.nanoTime();
-    int n = lista.getTamanno();
 
+    int n = lista.getTamanno();
     if (n <= 1) {
         return new SortResult(iterations, 0);
     }
 
     Nodo<T> cabeza = lista.getCabeza();
-
-    // Romper temporalmente la circularidad
-    Nodo<T> cola = cabeza;
-    while (cola.getSiguiente() != cabeza) {
-        cola = cola.getSiguiente();
-    }
-    cola.setSiguiente(null); // Romper la circularidad
-
     Nodo<T> actual = cabeza;
 
-    while (actual != null) {
-        Nodo<T> maximo = actual;
+    for (int i = 0; i < n - 1; i++) {
+        Nodo<T> minimo = actual;
         Nodo<T> siguiente = actual.getSiguiente();
 
-        while (siguiente != null) {
+        for (int j = i + 1; j < n; j++) {
             iterations++;
-            if (siguiente.getDato().compareTo(maximo.getDato()) > 0) {
-                maximo = siguiente;
+            if (siguiente.getDato().compareTo(minimo.getDato()) > 0) { 
+                minimo = siguiente;
             }
             siguiente = siguiente.getSiguiente();
         }
 
-        if (maximo != actual) {
+        if (minimo != actual) {
             T temp = actual.getDato();
-            actual.setDato(maximo.getDato());
-            maximo.setDato(temp);
+            actual.setDato(minimo.getDato());
+            minimo.setDato(temp);
         }
 
         actual = actual.getSiguiente();
     }
 
-    // Restaurar circularidad
-    Nodo<T> nuevaCola = cabeza;
-    while (nuevaCola.getSiguiente() != null) {
-        nuevaCola = nuevaCola.getSiguiente();
-    }
-    nuevaCola.setSiguiente(cabeza); // Restaurar enlace circular
-
     lista.setCabeza(cabeza);
+
     double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
     return new SortResult(iterations, elapsedMillis);
 }
+
 
 /**
      * Retorna el nombre legible del algoritmo.

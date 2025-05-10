@@ -1,8 +1,9 @@
 package com.mycompany.sort.model.SortingStrategy;
 
-import java.util.Comparator;
 
 import com.mycompany.sort.model.politico.Politico;
+import com.mycompany.sort.model.politico.Nodo;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
 
 import java.util.Objects;
 
@@ -11,47 +12,18 @@ import java.util.Objects;
  * Este algoritmo construye el arreglo ordenado de izquierda a derecha,
  * insertando cada nuevo elemento en la posición correcta respecto a los anteriores.
  */
-public class InsertionSortingStrategy<T extends Comparable<T>> implements SortingStrategy {
+public class InsertionSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
 
     private Nodo<T> cabezaOrdenada;
 
     /**
-     * Ordena un arreglo de objetos {@link Politico} usando el algoritmo Insertion Sort
+     * Ordena una lista enlazada simple de objetos {@link Politico} usando el algoritmo Insertion Sort
      * y un comparador definido por el usuario.
      *
-     * @param arr         el arreglo de políticos a ordenar
+     * @param lista         lista enlazada simple de políticos a ordenar
      * @param comparator  el comparador que define el criterio de ordenamiento
      * @return objeto {@link SortResult} que contiene el número de iteraciones y el tiempo de ejecución
      */
-   /* @Override
-    public SortResult sort(Politico[] arr, Comparator<Politico> comparator) {
-        long iterations = 0;
-        double start = System.nanoTime();
-        int n = arr.length;
-
-        for (int i = 1; i < n; i++) {
-            Politico key = arr[i];
-            int j = i - 1;
-
-            // Mueve los elementos mayores que key una posición adelante
-            while (j >= 0 && comparator.compare(arr[j], key) > 0) {
-                iterations++;
-                arr[j + 1] = arr[j];
-                j--;
-            }
-
-            // Si salió del while sin entrar, igual cuenta como una comparación
-            if (j >= 0) iterations++;
-
-            arr[j + 1] = key;
-        }
-
-        double end = System.nanoTime() - start;
-        double elapsedMillis = end / 1_000_000;
-
-        return new SortResult(iterations, elapsedMillis);
-    }
-    */
     @Override
     public SortResult sort(ListaEnlazadaSimple<T> lista) {
         Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");

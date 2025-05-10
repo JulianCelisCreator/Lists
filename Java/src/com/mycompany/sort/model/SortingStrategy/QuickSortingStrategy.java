@@ -1,9 +1,8 @@
 package com.mycompany.sort.model.SortingStrategy;
 
 import com.mycompany.sort.model.politico.Politico;
-
-import java.util.Comparator;
-import java.util.Stack;
+import com.mycompany.sort.model.politico.Nodo;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
 
 import java.util.Objects;
 
@@ -11,91 +10,16 @@ import java.util.Objects;
  * Implementación del algoritmo Quick Sort para ordenar arreglos de {@link Politico}.
  * Utiliza una pila para evitar recursión y selecciona el pivote usando la técnica de mediana de tres.
  */
-public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStrategy {
+public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
 
     private long iterations;
 
     /**
-     * Ordena un arreglo de objetos {@link Politico} utilizando Quick Sort de forma iterativa.
+     * Ordena una lista enlazada simple de objetos {@link Politico} utilizando Quick Sort de forma iterativa.
      *
-     * @param arr        el arreglo de políticos a ordenar
-     * @param comparator el comparador que define el criterio de ordenamiento
+     * @param lista        la lista enlazada simple de políticos a ordenar
      * @return un objeto {@link SortResult} con estadísticas de rendimiento
      */
-    @Override
-    public SortResult sort(Politico[] arr, Comparator<Politico> comparator) {
-        iterations = 0;
-        double start = System.nanoTime();
-
-        Stack<Integer> stack = new Stack<>();
-        stack.push(0);
-        stack.push(arr.length - 1);
-
-        while (!stack.isEmpty()) {
-            int high = stack.pop();
-            int low = stack.pop();
-
-            if (low < high) {
-                int pivotIndex = partition(arr, low, high, comparator);
-
-                // Empujar los subarreglos restantes a la pila
-                stack.push(low);
-                stack.push(pivotIndex - 1);
-                stack.push(pivotIndex + 1);
-                stack.push(high);
-            }
-        }
-
-        double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
-        return new SortResult(iterations, elapsedMillis);
-    }
-
-    /**
-     * Particiona el arreglo alrededor de un pivote seleccionado mediante mediana de tres.
-     *
-     * @param arr        el arreglo a particionar
-     * @param low        índice inferior del subarreglo
-     * @param high       índice superior del subarreglo
-     * @param comparator el comparador a usar
-     * @return índice final del pivote después de la partición
-     */
-    private int partition(Politico[] arr, int low, int high, Comparator<Politico> comparator) {
-        int mid = low + (high - low) / 2;
-
-        // Selección del pivote con mediana de tres
-        if (comparator.compare(arr[low], arr[mid]) > 0) swap(arr, low, mid);
-        if (comparator.compare(arr[low], arr[high]) > 0) swap(arr, low, high);
-        if (comparator.compare(arr[mid], arr[high]) > 0) swap(arr, mid, high);
-
-        swap(arr, mid, high);
-        Politico pivot = arr[high];
-
-        int i = low - 1;
-        for (int j = low; j < high; j++) {
-            iterations++;
-            if (comparator.compare(arr[j], pivot) <= 0) {
-                i++;
-                swap(arr, i, j);
-            }
-        }
-
-        swap(arr, i + 1, high);
-        return i + 1;
-    }
-
-    /**
-     * Intercambia dos elementos en el arreglo.
-     *
-     * @param arr el arreglo de políticos
-     * @param i   índice del primer elemento
-     * @param j   índice del segundo elemento
-     */
-    private void swap(Politico[] arr, int i, int j) {
-        Politico temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-
     @Override
     public SortResult sort(ListaEnlazadaSimple<T> lista) {
         Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
@@ -105,7 +29,7 @@ public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStr
         int n = lista.getTamanno();
 
         if (n <= 1) {
-            return;
+            return new SortResult(iterations , 0);
         }
 
         Nodo<T> cabeza = lista.getCabeza();
@@ -117,6 +41,14 @@ public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStr
         return new SortResult(iterations, elapsedMillis);
     }
 
+    /**
+ * Encuentra el nodo final (cola) de una lista enlazada.
+ * Recorre la lista desde el nodo proporcionado hasta el último nodo.
+ *
+ * @param nodo El nodo desde el cual comenzar la búsqueda de la cola.
+ * @return El nodo que representa la cola de la lista, o {@code null} si la lista está vacía.
+ */
+
     private Nodo<T> encontrarCola(Nodo<T> nodo) {
         if (nodo == null) {
             return null;
@@ -126,6 +58,14 @@ public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStr
         }
         return nodo;
     }
+
+    /**
+ * Realiza el algoritmo de ordenamiento QuickSort de manera recursiva en una sublista de la lista enlazada.
+ * Realiza particiones sobre la lista hasta que cada sublista quede ordenada.
+ *
+ * @param cabezaSubLista El nodo cabeza de la sublista que se va a ordenar.
+ * @param colaSubLista El nodo cola de la sublista que se va a ordenar.
+ */
 
     private void quickSortRecursivo(Nodo<T> cabezaSubLista, Nodo<T> colaSubLista) {
 
@@ -146,6 +86,15 @@ public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStr
              quickSortRecursivo(nodoPivoteFinal.getSiguiente(), colaSubLista);
          }
     }
+
+    /**
+ * Particiona la sublista de la lista enlazada en torno a un pivote.
+ * Los elementos mayores al pivote se colocan a la izquierda y los menores a la derecha.
+ *
+ * @param cabeza El nodo cabeza de la sublista que se va a particionar.
+ * @param cola El nodo cola de la sublista que se va a particionar.
+ * @return Un arreglo de nodos donde el primer elemento es el nodo pivote final y el segundo elemento es el nodo antes del pivote.
+ */
 
     private Nodo<T>[] particionar(Nodo<T> cabeza, Nodo<T> cola) {
         T valorPivote = cola.getDato();

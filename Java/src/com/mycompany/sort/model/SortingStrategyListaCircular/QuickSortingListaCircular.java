@@ -1,100 +1,87 @@
-package com.mycompany.sort.SortingStrategyListaCircular;
+package com.mycompany.sort.model.SortingStrategyListaCircular;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimpleCircular;
+import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
-public class QuickSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular{
+public class QuickSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T>{
     
-    private long iterations;
-
     @Override
 public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {
     Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
-
-    iterations = 0;
+    long iterations = 0;
     double start = System.nanoTime();
-    int n = lista.getTamanno();
 
-    if (n <= 1) {
+    if (lista.getTamanno() <= 1) {
         return new SortResult(iterations, 0);
     }
 
     Nodo<T> cabeza = lista.getCabeza();
+    lista.getUltimo().setSiguiente(null); // Rompe circularidad temporal
 
-    Nodo<T> cola = cabeza;
-    while (cola.getSiguiente() != cabeza) {
-        cola = cola.getSiguiente();
+    // Aplicar quicksort y obtener la nueva cabeza
+    QuickSortResult<T> resultado = quickSort(cabeza, null);
+    iterations = resultado.iterations;
+
+    // Restaurar circularidad
+    Nodo<T> nuevoUltimo = resultado.cabeza;
+    while (nuevoUltimo.getSiguiente() != null) {
+        nuevoUltimo = nuevoUltimo.getSiguiente();
     }
-    cola.setSiguiente(null);
+    nuevoUltimo.setSiguiente(resultado.cabeza);
+    lista.setCabeza(resultado.cabeza);
 
-    quickSortRecursivo(cabeza, cola);
-
-    Nodo<T> nuevaCola = cabeza;
-    while (nuevaCola.getSiguiente() != null) {
-        nuevaCola = nuevaCola.getSiguiente();
-    }
-    nuevaCola.setSiguiente(cabeza); 
-
-    lista.setCabeza(cabeza);
     double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
     return new SortResult(iterations, elapsedMillis);
 }
 
-private void quickSortRecursivo(Nodo<T> cabezaSubLista, Nodo<T> colaSubLista) {
-    if (cabezaSubLista == null || colaSubLista == null || cabezaSubLista == colaSubLista || cabezaSubLista == colaSubLista.getSiguiente()) {
-        return;
-    }
+private static class QuickSortResult<T> {
+    Nodo<T> cabeza;
+    long iterations;
 
-    Nodo<T>[] resultadoParticion = particionar(cabezaSubLista, colaSubLista);
-    Nodo<T> pivote = resultadoParticion[0];
-    Nodo<T> nodoAntesPivote = resultadoParticion[1];
-
-    if (nodoAntesPivote != null && pivote != cabezaSubLista) {
-        quickSortRecursivo(cabezaSubLista, nodoAntesPivote);
-    }
-
-    if (pivote != null && pivote != colaSubLista) {
-        quickSortRecursivo(pivote.getSiguiente(), colaSubLista);
+    QuickSortResult(Nodo<T> cabeza, long iterations) {
+        this.cabeza = cabeza;
+        this.iterations = iterations;
     }
 }
 
-private Nodo<T>[] particionar(Nodo<T> cabeza, Nodo<T> cola) {
-    T valorPivote = cola.getDato();
-
-    Nodo<T> i = null;
-    Nodo<T> actual = cabeza;
-
-    while (actual != cola) {
-        if (actual.getDato().compareTo(valorPivote) < 0) { 
-            i = (i == null) ? cabeza : i.getSiguiente();
-            T temp = actual.getDato();
-            actual.setDato(i.getDato());
-            i.setDato(temp);
-        }
-        actual = actual.getSiguiente();
+private QuickSortResult<T> quickSort(Nodo<T> inicio, Nodo<T> fin) {
+    if (inicio == fin || inicio == null || inicio.getSiguiente() == fin) {
+        return new QuickSortResult<>(inicio, 0);
     }
 
-    i = (i == null) ? cabeza : i.getSiguiente();
-    T temp = cola.getDato();
-    cola.setDato(i.getDato());
-    i.setDato(temp);
+    long iterations = 0;
+    Nodo<T> pivot = inicio;
+    Nodo<T> i = inicio;
+    Nodo<T> j = inicio.getSiguiente();
 
-    Nodo<T> nodoAntesPivote = null;
-    if (i != cabeza) {
-        Nodo<T> buscador = cabeza;
-        while (buscador.getSiguiente() != i) {
-            buscador = buscador.getSiguiente();
+    while (j != fin) {
+        iterations++;
+        if (j.getDato().compareTo(pivot.getDato()) < 0) { // ASCENDENTE
+            i = i.getSiguiente();
+            swap(i, j);
         }
-        nodoAntesPivote = buscador;
+        j = j.getSiguiente();
     }
 
-    @SuppressWarnings("unchecked")
-    Nodo<T>[] resultado = (Nodo<T>[]) new Nodo<?>[2];
-    resultado[0] = i;                
-    resultado[1] = nodoAntesPivote; 
-    return resultado;
+    swap(i, pivot);
+
+    QuickSortResult<T> left = quickSort(inicio, i);
+    QuickSortResult<T> right = quickSort(i.getSiguiente(), fin);
+
+    iterations += left.iterations + right.iterations;
+
+    return new QuickSortResult<>(left.cabeza, iterations);
 }
+
+private void swap(Nodo<T> a, Nodo<T> b) {
+    T temp = a.getDato();
+    a.setDato(b.getDato());
+    b.setDato(temp);
+}
+
 
     /**
      * Retorna el nombre legible del algoritmo.

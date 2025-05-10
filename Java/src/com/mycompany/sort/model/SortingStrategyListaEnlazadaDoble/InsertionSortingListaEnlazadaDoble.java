@@ -1,10 +1,12 @@
 package com.mycompany.sort.model.SortingStrategyListaEnlazadaDoble;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaDoble;
+import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
-public class InsertionSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble {
+public class InsertionSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
  
     @Override
 public SortResult sort(ListaEnlazadaDoble<T> lista) {
@@ -12,60 +14,37 @@ public SortResult sort(ListaEnlazadaDoble<T> lista) {
 
     long iterations = 0;
     double start = System.nanoTime();
+
     int n = lista.getTamanno();
     if (n <= 1) {
         return new SortResult(iterations, 0);
     }
 
-    NodoDoble<T> cabezaOriginal = lista.getCabeza();
-    NodoDoble<T> nodoActual = cabezaOriginal.getSiguiente();
-    cabezaOriginal.setAnterior(null);
-    cabezaOriginal.setSiguiente(null);
+    NodoDoble<T> actual = lista.getCabeza().getSiguiente(); // Empezamos desde el segundo nodo
+    while (actual != null) {
+        NodoDoble<T> siguiente = actual.getSiguiente();
+        NodoDoble<T> anterior = actual.getAnterior();
 
-    while (nodoActual != null) {
-        NodoDoble<T> siguiente = nodoActual.getSiguiente();
-        nodoActual.setAnterior(null);
-        nodoActual.setSiguiente(null);
+        while (anterior != null && anterior.getDato().compareTo(actual.getDato()) > 0) {  // ASCENDENTE
+            // Intercambiar los datos de los nodos
+            T temp = anterior.getDato();
+            anterior.setDato(actual.getDato());
+            actual.setDato(temp);
 
-        insertarEnOrden(nodoActual, lista);
+            // Mover hacia atrás en la lista
+            actual = anterior;
+            anterior = actual.getAnterior();
 
-        nodoActual = siguiente;
-        iterations++;
+            iterations++;
+        }
+
+        actual = siguiente;
     }
 
     double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
     return new SortResult(iterations, elapsedMillis);
 }
 
-private void insertarEnOrden(NodoDoble<T> nodoAInsertar, ListaEnlazadaDoble<T> lista) {
-    NodoDoble<T> cabeza = lista.getCabeza();
-
-    if (cabeza == null || cabeza.getDato().compareTo(nodoAInsertar.getDato()) <= 0) {
-        // Insertar al inicio
-        nodoAInsertar.setSiguiente(cabeza);
-        if (cabeza != null) {
-            cabeza.setAnterior(nodoAInsertar);
-        }
-        lista.setCabeza(nodoAInsertar);
-        return;
-    }
-
-    NodoDoble<T> actual = cabeza;
-
-    while (actual.getSiguiente() != null && 
-           actual.getSiguiente().getDato().compareTo(nodoAInsertar.getDato()) > 0) {
-        actual = actual.getSiguiente();
-    }
-
-    NodoDoble<T> siguiente = actual.getSiguiente();
-    actual.setSiguiente(nodoAInsertar);
-    nodoAInsertar.setAnterior(actual);
-
-    if (siguiente != null) {
-        nodoAInsertar.setSiguiente(siguiente);
-        siguiente.setAnterior(nodoAInsertar);
-    }
-}
 
     /**
      * Devuelve el nombre legible del algoritmo de ordenamiento.

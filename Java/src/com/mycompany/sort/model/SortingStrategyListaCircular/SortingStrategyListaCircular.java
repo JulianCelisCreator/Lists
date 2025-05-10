@@ -1,6 +1,8 @@
-package com.mycompany.sort.SortingStrategyListaCircular;
+package com.mycompany.sort.model.SortingStrategyListaCircular;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+
+import com.mycompany.sort.model.politico.ListaEnlazadaSimpleCircular;
 
 public interface SortingStrategyListaCircular<T> {
     

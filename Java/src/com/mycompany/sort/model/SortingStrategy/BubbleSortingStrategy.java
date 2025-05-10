@@ -2,7 +2,9 @@ package com.mycompany.sort.model.SortingStrategy;
 
 import com.mycompany.sort.model.politico.Politico;
 
-import java.util.Comparator;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
+
+import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
@@ -11,8 +13,15 @@ import java.util.Objects;
  * Este algoritmo compara pares adyacentes y los intercambia si están en el orden incorrecto,
  * repitiendo el proceso hasta que la lista esté ordenada.
  */
-public class BubbleSortingStrategy<T extends Comparable<T>> implements SortingStrategy {
+public class BubbleSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
    
+    /**
+     * Ordena una lista enlazada simple de objetos {@link Politico} usando el algoritmo Bubble Sort
+     *
+     * @param lista         la lista enlazada simple de políticos a ordenar
+     * @return objeto {@link SortResult} con estadísticas del proceso (iteraciones y tiempo)
+     */
+
     @Override
     public SortResult sort(ListaEnlazadaSimple<T> lista) {
 
@@ -64,7 +73,7 @@ public class BubbleSortingStrategy<T extends Comparable<T>> implements SortingSt
     /**
      * Devuelve el nombre legible del algoritmo de ordenamiento.
      *
-     * @return nombre del algoritmo ("Bubble Sort")
+     * @return nombre del algoritmo ("Bubble Sort Lista Enlazada Simple")
      */
     @Override
     public String getName() {

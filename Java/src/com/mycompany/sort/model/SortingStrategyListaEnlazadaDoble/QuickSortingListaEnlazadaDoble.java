@@ -1,10 +1,12 @@
-package com.mycompany.sort.SortingStrategyListaEnlazadaDoble;
+package com.mycompany.sort.model.SortingStrategyListaEnlazadaDoble;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaDoble;
+import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
-public class QuickSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble {
+public class QuickSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
     
     private long iterations;
 

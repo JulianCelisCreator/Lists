@@ -1,10 +1,12 @@
-package com.mycompany.sort.SortingStrategyListaEnlazadaDoble;
+package com.mycompany.sort.model.SortingStrategyListaEnlazadaDoble;
 
 import com.mycompany.sort.model.SortingStrategy.SortResult;
+import com.mycompany.sort.model.politico.ListaEnlazadaDoble;
+import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
-public class BubbleSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble {
+public class BubbleSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
     
     @Override
 public SortResult sort(ListaEnlazadaDoble<T> lista) {
@@ -12,30 +14,36 @@ public SortResult sort(ListaEnlazadaDoble<T> lista) {
 
     long iterations = 0;
     double start = System.nanoTime();
-    int n = lista.getTamanno();
 
+    int n = lista.getTamanno();
     if (n <= 1) {
         return new SortResult(iterations, 0);
     }
 
+    NodoDoble<T> actual = lista.getCabeza();
+    NodoDoble<T> siguiente;
     boolean intercambiado;
 
     for (int i = 0; i < n - 1; i++) {
-        NodoDoble<T> actual = lista.getCabeza();
+        actual = lista.getCabeza();
         intercambiado = false;
 
-        while (actual != null && actual.getSiguiente() != null) {
+        for (int j = 0; j < n - i - 1; j++) {
             iterations++;
-            if (actual.getDato().compareTo(actual.getSiguiente().getDato()) < 0) {
-                // Intercambiar los datos
+            siguiente = actual.getSiguiente();
+
+            if (actual.getDato().compareTo(siguiente.getDato()) > 0) {  // ASCENDENTE
+                // Intercambiar los datos de los nodos
                 T temp = actual.getDato();
-                actual.setDato(actual.getSiguiente().getDato());
-                actual.getSiguiente().setDato(temp);
+                actual.setDato(siguiente.getDato());
+                siguiente.setDato(temp);
                 intercambiado = true;
             }
-            actual = actual.getSiguiente();
+
+            actual = siguiente;
         }
 
+        // Si no hubo intercambios, la lista ya está ordenada
         if (!intercambiado) {
             break;
         }
@@ -44,6 +52,7 @@ public SortResult sort(ListaEnlazadaDoble<T> lista) {
     double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
     return new SortResult(iterations, elapsedMillis);
 }
+
 
     /**
      * Devuelve el nombre legible del algoritmo de ordenamiento.

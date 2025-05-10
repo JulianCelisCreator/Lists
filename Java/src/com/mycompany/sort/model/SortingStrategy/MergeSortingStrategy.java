@@ -1,8 +1,8 @@
 package com.mycompany.sort.model.SortingStrategy;
 
-import java.util.Comparator;
-
 import com.mycompany.sort.model.politico.Politico;
+import com.mycompany.sort.model.politico.Nodo;
+import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
 
 import java.util.Objects;
 
@@ -10,78 +10,16 @@ import java.util.Objects;
  * Implementación del algoritmo Merge Sort para ordenar arreglos de {@link Politico}.
  * Este algoritmo utiliza el enfoque de divide y vencerás para ordenar eficientemente los datos.
  */
-public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStrategy {
+public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
 
     private long iterations;
 
     /**
-     * Ordena un arreglo de objetos {@link Politico} usando Merge Sort
-     * y un comparador definido por el usuario.
+     * Ordena una lista enlazada simple de objetos {@link Politico} usando Merge Sort
      *
-     * @param arr         el arreglo de políticos a ordenar
-     * @param comparator  el comparador que define el criterio de ordenamiento
+     * @param lista         la lista enlazada simple de políticos a ordenar
      * @return objeto {@link SortResult} con métricas de rendimiento
      */
-    @Override
-    public SortResult sort(Politico[] arr, Comparator<Politico> comparator) {
-        iterations = 0;
-        double start = System.nanoTime();
-
-        mergeSort(arr, 0, arr.length - 1, comparator);
-
-        double end = System.nanoTime() - start;
-        double elapsedMillis = end / 1_000_000;
-
-        return new SortResult(iterations, elapsedMillis);
-    }
-
-    /**
-     * Método recursivo para dividir el arreglo y aplicar Merge Sort.
-     */
-    private void mergeSort(Politico[] arr, int left, int right, Comparator<Politico> comparator) {
-        if (left < right) {
-            int mid = (left + right) / 2;
-
-            mergeSort(arr, left, mid, comparator);
-            mergeSort(arr, mid + 1, right, comparator);
-
-            merge(arr, left, mid, right, comparator);
-        }
-    }
-
-    /**
-     * Fusión de dos subarreglos ordenados de {@link Politico} en uno solo ordenado.
-     */
-    private void merge(Politico[] arr, int left, int mid, int right, Comparator<Politico> comparator) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
-
-        Politico[] leftArr = new Politico[n1];
-        Politico[] rightArr = new Politico[n2];
-
-        System.arraycopy(arr, left, leftArr, 0, n1);
-        System.arraycopy(arr, mid + 1, rightArr, 0, n2);
-
-        int i = 0, j = 0, k = left;
-
-        while (i < n1 && j < n2) {
-            iterations++;
-            if (comparator.compare(leftArr[i], rightArr[j]) <= 0) {
-                arr[k++] = leftArr[i++];
-            } else {
-                arr[k++] = rightArr[j++];
-            }
-        }
-
-        while (i < n1) {
-            arr[k++] = leftArr[i++];
-        }
-
-        while (j < n2) {
-            arr[k++] = rightArr[j++];
-        }
-    }
-
     @Override
     public SortResult sort(ListaEnlazadaSimple<T> lista) {
         Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
@@ -102,6 +40,14 @@ public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStr
         return new SortResult(iterations, elapsedMillis);
     }
 
+    /**
+ * Realiza el algoritmo de ordenamiento Merge Sort de manera recursiva sobre una lista enlazada.
+ * Divide la lista en dos mitades y las ordena de forma recursiva. Luego fusiona las dos mitades ordenadas.
+ *
+ * @param cabeza El nodo cabeza de la lista a ordenar.
+ * @return El nodo cabeza de la lista ordenada.
+ */
+
     private Nodo<T> mergeSortRecursivo(Nodo<T> cabeza) {
         if (cabeza == null || cabeza.getSiguiente() == null) {
             return cabeza;
@@ -117,6 +63,15 @@ public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStr
         return fusionar(izquierdaOrdenada, derechaOrdenada);
     }
 
+    /**
+ * Encuentra el nodo del medio de la lista enlazada.
+ * Utiliza el enfoque de dos punteros, uno lento que avanza de uno en uno y otro rápido que avanza de dos en dos.
+ * Cuando el puntero rápido llega al final, el puntero lento estará en el medio.
+ *
+ * @param cabeza El nodo cabeza de la lista en la que se busca el medio.
+ * @return El nodo que se encuentra en el medio de la lista.
+ */
+
     private Nodo<T> encontrarMedio(Nodo<T> cabeza) {
         Nodo<T> lento = cabeza;
         Nodo<T> rapido = cabeza.getSiguiente();
@@ -127,6 +82,15 @@ public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStr
         }
         return lento;
     }
+
+    /**
+ * Fusiona dos sublistas ordenadas en una sola lista ordenada.
+ * Compara los elementos de ambas listas y los combina en el orden adecuado.
+ *
+ * @param izquierda La primera lista ordenada.
+ * @param derecha La segunda lista ordenada.
+ * @return El nodo cabeza de la lista fusionada y ordenada.
+ */
 
     private Nodo<T> fusionar(Nodo<T> izquierda, Nodo<T> derecha) {
         if (izquierda == null) {
