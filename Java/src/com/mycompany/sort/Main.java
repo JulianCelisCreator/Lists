@@ -1,6 +1,7 @@
 package com.mycompany.sort;
 
 import com.mycompany.sort.controller.SortingController;
+import com.mycompany.sort.model.SortingStrategy.BubbleSortingStrategy;
 import com.mycompany.sort.view.SortingGUI;
 
 import javax.swing.SwingUtilities;
@@ -17,8 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            SortingController controller = new SortingController(); // Lógica del análisis
-            SortingGUI gui = new SortingGUI(controller);            // Interfaz visual
+            SortingController controller = new SortingController(new BubbleSortingStrategy<>()); // Lógica del análisis
+            SortingGUI gui = new SortingGUI();            // Interfaz visual
             gui.setVisible(true);
         });
     }
