@@ -1,28 +1,26 @@
 package com.mycompany.sort.model.politico;
 
 import java.time.LocalDate;
-
 import java.util.Objects;
 
 /**
  * Representa un político con dos atributos: dinero y fecha de nacimiento (o cualquier fecha relevante).
- *
  * Esta clase es inmutable: sus atributos son finales y no posee setters.
  * Se utiliza como entidad base para aplicar diferentes estrategias de ordenamiento.
  */
-public class Politico implements Comparable<Politico>{
-    private final int dinero;
-    private final LocalDate fecha;
+public class Politico implements Comparable<Politico> {
+    private final int dinero; // Cantidad de dinero asociada al político
+    private final LocalDate fecha; // Fecha asociada al político (puede ser fecha de nacimiento, ingreso, etc.)
 
     /**
      * Crea una nueva instancia de {@code Politico} con los valores especificados.
      *
      * @param dinero  Cantidad de dinero asociada al político
-     * @param fecha   Fecha asociada (puede representar nacimiento, ingreso, etc.)
+     * @param fecha   Fecha asociada al político (puede representar nacimiento, ingreso, etc.)
      */
     public Politico(int dinero, LocalDate fecha) {
-        this.dinero = dinero;
-        this.fecha = fecha;
+        this.dinero = dinero;  // Asigna el valor del dinero
+        this.fecha = fecha;    // Asigna la fecha asociada
     }
 
     /**
@@ -31,7 +29,7 @@ public class Politico implements Comparable<Politico>{
      * @return dinero del político
      */
     public int getDinero() {
-        return dinero;
+        return dinero;  // Devuelve el valor del dinero
     }
 
     /**
@@ -40,7 +38,7 @@ public class Politico implements Comparable<Politico>{
      * @return fecha del político
      */
     public LocalDate getFecha() {
-        return fecha;
+        return fecha;  // Devuelve la fecha asociada
     }
 
     /**
@@ -50,23 +48,25 @@ public class Politico implements Comparable<Politico>{
      */
     @Override
     public String toString() {
+        // Devuelve la representación en formato "$dinero - fecha"
         return String.format("$%,d - %s", dinero, fecha.toString());
     }
 
     /**
-     * Compara este Papa con otro basándose en la fecha de inicio del papado (orden cronológico).
-     * Esta es la implementación del contrato {@link Comparable}<{@link Papa}>.
+     * Compara este Politico con otro basándose en la cantidad de dinero (orden de mayor a menor dinero).
+     * Esta es la implementación del contrato {@link Comparable}<{@link Politico}>.
      *
-     * @param other El otro Papa a comparar (no debe ser null).
-     * @return Un entero negativo, cero o positivo si este Papa inició antes,
-     *         en la misma fecha, o después que {@code other}.
+     * @param other El otro Politico a comparar (no debe ser null).
+     * @return Un entero negativo, cero o positivo si este Politico tiene menos,
+     *         la misma cantidad o más dinero que {@code other}.
      * @throws NullPointerException si {@code other} es null.
      */
-
     @Override
     public int compareTo(Politico other) {
-    Objects.requireNonNull(other, "No se puede comparar con un Politico null.");
-    return Integer.compare(this.dinero, other.dinero);
-}
+        // Se asegura de que el objeto "other" no sea null
+        Objects.requireNonNull(other, "No se puede comparar con un Politico null.");
 
+        // Compara los valores de dinero entre este Politico y el otro
+        return Integer.compare(this.dinero, other.dinero); // Devuelve -1, 0 o 1
+    }
 }

@@ -4,7 +4,6 @@ import com.mycompany.sort.model.politico.Politico;
 
 /**
  * Clase base abstracta para los generadores de datos de tipo {@link Politico}.
- *
  * Implementa el patrón de diseño Chain of Responsibility, permitiendo encadenar
  * múltiples generadores de datos que manejan distintos tipos de ordenamiento
  * (por ejemplo: ordenado, inverso, aleatorio).
