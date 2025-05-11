@@ -6,7 +6,19 @@ import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
+/**
+ * Estrategia de ordenamiento que implementa el algoritmo Selection Sort.
+ * Ordena una lista Enlazada doble de objetos {@link Politico}
+ */
+
 public class SelectionSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
+
+    /**
+     * Ordena la lista enlazada doble de politicos utilizando Selection Sort.
+     *
+     * @param lista        la lista enlazada doble de políticos a ordenar
+     * @return un objeto {@link SortResult} que contiene las estadísticas del ordenamiento
+     */
 
     @Override
 public SortResult sort(ListaEnlazadaDoble<T> lista) {

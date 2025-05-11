@@ -7,7 +7,7 @@ import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
 import java.util.Objects;
 
 /**
- * Implementación del algoritmo Merge Sort para ordenar arreglos de {@link Politico}.
+ * Implementación del algoritmo Merge Sort para ordenar listas enlazadas simples de {@link Politico}.
  * Este algoritmo utiliza el enfoque de divide y vencerás para ordenar eficientemente los datos.
  */
 public class MergeSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {

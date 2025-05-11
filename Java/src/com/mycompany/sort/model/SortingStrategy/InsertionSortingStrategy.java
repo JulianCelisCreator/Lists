@@ -18,10 +18,8 @@ public class InsertionSortingStrategy<T extends Comparable<T>> implements Sortin
 
     /**
      * Ordena una lista enlazada simple de objetos {@link Politico} usando el algoritmo Insertion Sort
-     * y un comparador definido por el usuario.
      *
      * @param lista         lista enlazada simple de políticos a ordenar
-     * @param comparator  el comparador que define el criterio de ordenamiento
      * @return objeto {@link SortResult} que contiene el número de iteraciones y el tiempo de ejecución
      */
     @Override

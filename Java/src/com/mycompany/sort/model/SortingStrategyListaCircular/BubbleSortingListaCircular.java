@@ -7,6 +7,12 @@ import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
+/**
+ * Implementación del algoritmo de ordenamiento Bubble Sort.
+ * Este algoritmo compara pares adyacentes y los intercambia si están en el orden incorrecto,
+ * repitiendo el proceso hasta que la lista esté ordenada.
+ */
+
 public class BubbleSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T> {
  
 

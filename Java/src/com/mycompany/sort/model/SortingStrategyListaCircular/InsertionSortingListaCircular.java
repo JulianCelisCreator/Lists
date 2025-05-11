@@ -7,6 +7,12 @@ import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
+/**
+ * Implementación del algoritmo de ordenamiento Insertion Sort.
+ * Este algoritmo construye el arreglo ordenado de izquierda a derecha,
+ * insertando cada nuevo elemento en la posición correcta respecto a los anteriores.
+ */
+
 public class InsertionSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T> {
     
     /**

@@ -6,12 +6,25 @@ import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
+/**
+ * Implementación del algoritmo Quick Sort para ordenar lista simple circular de {@link Politico}.
+ * Utiliza una pila para evitar recursión y selecciona el pivote usando la técnica de mediana de tres.
+ */
+
 public class QuickSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T>{
     
+    private long iterations;
+
+    /**
+     * Ordena una lista enlazada simple circular de objetos {@link Politico} utilizando Quick Sort de forma iterativa.
+     *
+     * @param lista        la lista enlazada simple circular de políticos a ordenar
+     * @return un objeto {@link SortResult} con estadísticas de rendimiento
+     */
     @Override
 public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {
     Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
-    long iterations = 0;
+    this.iterations = 0;
     double start = System.nanoTime();
 
     if (lista.getTamanno() <= 1) {
@@ -19,46 +32,42 @@ public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {
     }
 
     Nodo<T> cabeza = lista.getCabeza();
-    lista.getUltimo().setSiguiente(null); // Rompe circularidad temporal
+    lista.getUltimo().setSiguiente(null); 
 
-    // Aplicar quicksort y obtener la nueva cabeza
-    QuickSortResult<T> resultado = quickSort(cabeza, null);
-    iterations = resultado.iterations;
+    Nodo<T> nuevaCabeza = quickSort(cabeza, null);
 
-    // Restaurar circularidad
-    Nodo<T> nuevoUltimo = resultado.cabeza;
+    Nodo<T> nuevoUltimo = nuevaCabeza;
     while (nuevoUltimo.getSiguiente() != null) {
         nuevoUltimo = nuevoUltimo.getSiguiente();
     }
-    nuevoUltimo.setSiguiente(resultado.cabeza);
-    lista.setCabeza(resultado.cabeza);
+    nuevoUltimo.setSiguiente(nuevaCabeza);
+    lista.setCabeza(nuevaCabeza);
 
     double elapsedMillis = (System.nanoTime() - start) / 1_000_000;
     return new SortResult(iterations, elapsedMillis);
 }
 
-private static class QuickSortResult<T> {
-    Nodo<T> cabeza;
-    long iterations;
+/**
+ * Ordena recursivamente una sublista de nodos enlazados usando el algoritmo de Quick Sort.
+ * La partición se realiza en torno al nodo inicial como pivote, reordenando nodos
+ * menores al pivote a la izquierda y mayores a la derecha.
+ *
+ * @param inicio El nodo inicial (inclusive) de la sublista a ordenar.
+ * @param fin El nodo final (exclusivo) de la sublista a ordenar. Puede ser null para indicar el fin de la lista.
+ * @return El nodo cabeza de la sublista ordenada. El nodo original puede o no mantenerse como cabeza después del ordenamiento.
+ */
 
-    QuickSortResult(Nodo<T> cabeza, long iterations) {
-        this.cabeza = cabeza;
-        this.iterations = iterations;
-    }
-}
-
-private QuickSortResult<T> quickSort(Nodo<T> inicio, Nodo<T> fin) {
+private Nodo<T> quickSort(Nodo<T> inicio, Nodo<T> fin) {
     if (inicio == fin || inicio == null || inicio.getSiguiente() == fin) {
-        return new QuickSortResult<>(inicio, 0);
+        return inicio;
     }
 
-    long iterations = 0;
     Nodo<T> pivot = inicio;
     Nodo<T> i = inicio;
     Nodo<T> j = inicio.getSiguiente();
 
     while (j != fin) {
-        iterations++;
+        this.iterations++;
         if (j.getDato().compareTo(pivot.getDato()) < 0) { // ASCENDENTE
             i = i.getSiguiente();
             swap(i, j);
@@ -68,20 +77,24 @@ private QuickSortResult<T> quickSort(Nodo<T> inicio, Nodo<T> fin) {
 
     swap(i, pivot);
 
-    QuickSortResult<T> left = quickSort(inicio, i);
-    QuickSortResult<T> right = quickSort(i.getSiguiente(), fin);
+    Nodo<T> cabezaIzquierda = quickSort(inicio, i);
+    Nodo<T> cabezaDerecha = quickSort(i.getSiguiente(), fin);
 
-    iterations += left.iterations + right.iterations;
-
-    return new QuickSortResult<>(left.cabeza, iterations);
+    return cabezaIzquierda;
 }
+
+/**
+ * Intercambia los valores almacenados en dos nodos de una lista enlazada.
+ *
+ * @param a El primer nodo.
+ * @param b El segundo nodo.
+ */
 
 private void swap(Nodo<T> a, Nodo<T> b) {
     T temp = a.getDato();
     a.setDato(b.getDato());
     b.setDato(temp);
 }
-
 
     /**
      * Retorna el nombre legible del algoritmo.

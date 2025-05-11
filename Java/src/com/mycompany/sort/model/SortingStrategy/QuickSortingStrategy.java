@@ -7,7 +7,7 @@ import com.mycompany.sort.model.politico.ListaEnlazadaSimple;
 import java.util.Objects;
 
 /**
- * Implementación del algoritmo Quick Sort para ordenar arreglos de {@link Politico}.
+ * Implementación del algoritmo Quick Sort para ordenar listas enlazadas simples de {@link Politico}.
  * Utiliza una pila para evitar recursión y selecciona el pivote usando la técnica de mediana de tres.
  */
 public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {

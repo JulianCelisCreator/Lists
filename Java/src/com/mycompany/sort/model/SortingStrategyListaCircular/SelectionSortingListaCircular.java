@@ -6,8 +6,20 @@ import com.mycompany.sort.model.politico.Nodo;
 
 import java.util.Objects;
 
+/**
+ * Estrategia de ordenamiento que implementa el algoritmo Selection Sort.
+ * Ordena una lista Enlazada simple de objetos {@link Politico}
+ */
+
 public class SelectionSortingListaCircular<T extends Comparable<T>> implements SortingStrategyListaCircular<T> {
     
+    /**
+     * Ordena la lista enlazada simple de politicos utilizando Selection Sort.
+     *
+     * @param lista        la lista enlazada simple de políticos a ordenar
+     * @return un objeto {@link SortResult} que contiene las estadísticas del ordenamiento
+     */
+
     @Override
 public SortResult sort(ListaEnlazadaSimpleCircular<T> lista) {
     Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");

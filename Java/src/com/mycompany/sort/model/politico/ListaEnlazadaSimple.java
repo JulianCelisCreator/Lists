@@ -3,6 +3,15 @@ package com.mycompany.sort.model.politico;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+/**
+ * Implementación de una lista enlazada simple genérica.
+ * Permite almacenar una secuencia ordenada de elementos de tipo {@code T}.
+ * Soporta operaciones básicas de inserción, eliminación, búsqueda y clonación.
+ * Mantiene referencias a la cabeza y la cola para optimizar algunas operaciones.
+ *
+ * @param <T> El tipo de elementos almacenados en la lista.
+ */
+
 public class ListaEnlazadaSimple<T> {
     
     /** Referencia al primer nodo de la lista (cabeza). {@code null} si la lista está vacía. */

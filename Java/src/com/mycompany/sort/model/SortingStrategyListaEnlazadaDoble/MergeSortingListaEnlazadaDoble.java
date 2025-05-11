@@ -6,10 +6,22 @@ import com.mycompany.sort.model.politico.NodoDoble;
 
 import java.util.Objects;
 
+/**
+ * Implementación del algoritmo Merge Sort para ordenar listas enlazadas dobles de {@link Politico}.
+ * Este algoritmo utiliza el enfoque de divide y vencerás para ordenar eficientemente los datos.
+ */
+
 public class MergeSortingListaEnlazadaDoble<T extends Comparable<T>> implements SortingStrategyEnlazadaDoble<T> {
     
     private long iterations;
 
+    /**
+ * Ordena una lista doblemente enlazada utilizando el algoritmo Merge Sort de forma recursiva.
+ *
+ * @param lista La lista doblemente enlazada a ordenar.
+ * @return Un objeto {@link SortResult} que contiene el número de iteraciones y el tiempo transcurrido en milisegundos.
+ * @throws NullPointerException Si la lista proporcionada es null.
+ */
     @Override
 public SortResult sort(ListaEnlazadaDoble<T> lista) {
     Objects.requireNonNull(lista, "La lista a ordenar no puede ser null.");
@@ -23,7 +35,6 @@ public SortResult sort(ListaEnlazadaDoble<T> lista) {
 
     NodoDoble<T> nuevaCabeza = mergeSortRecursivo(lista.getCabeza());
 
-    // Reestablecer los punteros anteriores correctamente
     NodoDoble<T> actual = nuevaCabeza;
     NodoDoble<T> anterior = null;
     while (actual != null) {
@@ -37,6 +48,14 @@ public SortResult sort(ListaEnlazadaDoble<T> lista) {
 
     return new SortResult(iterations, elapsedMillis);
 }
+
+/**
+ * Implementa recursivamente el algoritmo Merge Sort sobre una lista doblemente enlazada.
+ * Divide la lista en dos mitades, ordena cada mitad y las fusiona de manera ordenada.
+ *
+ * @param cabeza El nodo cabeza de la sublista a ordenar.
+ * @return El nodo cabeza de la sublista ordenada.
+ */
 
 private NodoDoble<T> mergeSortRecursivo(NodoDoble<T> cabeza) {
     if (cabeza == null || cabeza.getSiguiente() == null) {
@@ -56,6 +75,14 @@ private NodoDoble<T> mergeSortRecursivo(NodoDoble<T> cabeza) {
     return fusionar(izquierdaOrdenada, derechaOrdenada);
 }
 
+/**
+ * Encuentra el nodo del medio de una lista doblemente enlazada.
+ * Utiliza el algoritmo de dos punteros (lento y rápido) para lograrlo.
+ *
+ * @param cabeza El nodo inicial de la lista.
+ * @return El nodo medio de la lista.
+ */
+
 private NodoDoble<T> encontrarMedio(NodoDoble<T> cabeza) {
     NodoDoble<T> lento = cabeza;
     NodoDoble<T> rapido = cabeza.getSiguiente();
@@ -66,6 +93,15 @@ private NodoDoble<T> encontrarMedio(NodoDoble<T> cabeza) {
     }
     return lento;
 }
+
+/**
+ * Fusiona dos listas doblemente enlazadas ordenadas en una sola lista también ordenada.
+ * Preserva los punteros tanto hacia adelante como hacia atrás entre los nodos.
+ *
+ * @param izquierda La cabeza de la primera lista ordenada.
+ * @param derecha La cabeza de la segunda lista ordenada.
+ * @return La cabeza de la lista resultante ordenada.
+ */
 
 private NodoDoble<T> fusionar(NodoDoble<T> izquierda, NodoDoble<T> derecha) {
     if (izquierda == null) return derecha;

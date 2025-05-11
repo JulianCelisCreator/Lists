@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * Estrategia de ordenamiento que implementa el algoritmo Selection Sort.
- * Ordena un arreglo de objetos {@link Politico} según el criterio proporcionado por un {@link Comparator}.
+ * Ordena una lista Enlazada simple de objetos {@link Politico}
  */
 public class SelectionSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
 
