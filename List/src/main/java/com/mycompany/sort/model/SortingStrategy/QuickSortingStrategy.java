@@ -17,9 +17,9 @@ public class QuickSortingStrategy<T extends Comparable<T>> implements SortingStr
         long startTime = System.nanoTime();
         iterations = 0;
 
-        int tamaño = lista.getTamanno();
-        if (tamaño <= 1) {
-            return new ResultadoOrdenamiento(0, 0); // Lista vacía o de 1 elemento
+        int tamano = lista.getTamanno();
+        if (tamano <= 1) {
+            return new ResultadoOrdenamiento(0, 0); // Lista vacia o de 1 elemento
         }
 
         try {

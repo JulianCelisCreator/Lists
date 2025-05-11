@@ -6,7 +6,7 @@ import com.mycompany.sort.model.politico.Nodo;
 import java.util.Objects;
 
 /**
- * Implementación del algoritmo de ordenamiento Insertion Sort para listas enlazadas simples.
+ * Implementacion del algoritmo de ordenamiento Insertion Sort para listas enlazadas simples.
  */
 public class InsertionSortingStrategy<T extends Comparable<T>> implements SortingStrategy<T> {
 
@@ -14,7 +14,7 @@ public class InsertionSortingStrategy<T extends Comparable<T>> implements Sortin
      * Ordena una lista enlazada simple usando el algoritmo Insertion Sort.
      *
      * @param lista La lista enlazada simple a ordenar
-     * @return Objeto ResultadoOrdenamiento con iteraciones y tiempo de ejecución
+     * @return Objeto ResultadoOrdenamiento con iteraciones y tiempo de ejecucion
      */
     @Override
     public ResultadoOrdenamiento sort(ListaEnlazadaSimple<T> lista) {
@@ -23,8 +23,8 @@ public class InsertionSortingStrategy<T extends Comparable<T>> implements Sortin
         long startTime = System.nanoTime();
         int iterations = 0;
 
-        int tamaño = lista.getTamanno();
-        if (tamaño <= 1) {
+        int tamano = lista.getTamanno();
+        if (tamano <= 1) {
             return new ResultadoOrdenamiento(0, 0);
         }
 
@@ -35,7 +35,7 @@ public class InsertionSortingStrategy<T extends Comparable<T>> implements Sortin
             Nodo<T> siguiente = actual.getSiguiente();
             iterations = incrementIterationSafely(iterations);
 
-            // Caso 1: lista ordenada vacía o elemento debe ir al inicio
+            // Caso 1: lista ordenada vacia o elemento debe ir al inicio
             if (cabezaOrdenada == null || cabezaOrdenada.getDato().compareTo(actual.getDato()) >= 0) {
                 actual.setSiguiente(cabezaOrdenada);
                 cabezaOrdenada = actual;

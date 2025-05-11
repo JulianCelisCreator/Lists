@@ -6,7 +6,6 @@ import com.mycompany.sort.model.politico.Politico;
 /**
  * Clase encargada de gestionar la cadena de responsabilidad para la generación
  * de datos de tipo {@link Politico} en distintos órdenes: ordenado, inverso y aleatorio.
- *
  * Utiliza una serie de {@link DataGeneratorHandler} conectados entre sí,
  * siguiendo el patrón de diseño "Chain of Responsibility".
  */

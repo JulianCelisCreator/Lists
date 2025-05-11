@@ -28,7 +28,6 @@ public class InsertionSortingListaCircular<T extends Comparable<T>> implements S
 
         // Comienza el algoritmo Insertion Sort
         Nodo<T> actual = lista.getCabeza().getSiguiente(); // Segundo nodo
-        Nodo<T> previo = lista.getCabeza();
         int processed = 1; // Cuántos nodos se han procesado
 
         while (processed < lista.getTamanno()) {
@@ -63,7 +62,7 @@ public class InsertionSortingListaCircular<T extends Comparable<T>> implements S
         }
 
         double elapsedMillis = (System.nanoTime() - start) / 1_000_000.0;
-        System.out.printf("Terminado insertion\n");
+        System.out.print("Terminado insertion\n");
         return new ResultadoOrdenamiento(iterations, elapsedMillis);
     }
 
